@@ -1,0 +1,6 @@
+[submodule "Jigsaw/vendor/spdlog"]
+	path = Jigsaw/vendor/spdlog
+	url = https://github.com/gabime/spdlog
+[submodule "Jigsaw/vendor/GLFW"]
+	path = Jigsaw/vendor/GLFW
+	url = https://github.com/TheCherno/glfw
