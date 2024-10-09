@@ -1,7 +1,7 @@
 # Directories
-.vs/
-bin/
-bin-int/
+.vscode/
+build/
+cmake-build-debug/
 
 # Files
 *.user

@@ -4,13 +4,8 @@
 class Sandbox : public Jigsaw::Application 
 {
 public:
-	Sandbox() {
-
-	}
-
-	~Sandbox() {
-
-	}
+	Sandbox() = default;
+	~Sandbox() override = default;
 };
 
 Jigsaw::Application* Jigsaw::CreateApplication() {
