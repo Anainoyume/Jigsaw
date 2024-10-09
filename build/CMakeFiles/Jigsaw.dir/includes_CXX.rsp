@@ -1,0 +1,1 @@
+-IE:/GameDev/Jigsaw/Jigsaw/vendor/spdlog/include -IE:/GameDev/Jigsaw/Jigsaw/src -IE:/GameDev/Jigsaw/Jigsaw/vendor/GLFW/include -isystem "E:/vcpkg/vcpkg/installed/x64-mingw-static/include"

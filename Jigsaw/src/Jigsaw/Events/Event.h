@@ -21,7 +21,7 @@ namespace Jigsaw {
 		EventCategoryMouseButton	= BIT(4)
 	};
 
-#define EVENT_CLASS_TYPE(type) static EventType GetStaticType() { return EventType::##type; } \
+#define EVENT_CLASS_TYPE(type) static EventType GetStaticType() { return EventType::type; } \
 							   virtual EventType GetEventType() const override { return GetStaticType(); } \
 							   virtual const char* GetName() const override { return #type; }
 
@@ -64,5 +64,5 @@ namespace Jigsaw {
 	};
 
 	// 修改 - 重载格式化
-	auto format_as(const Event& e) { return e.ToString(); }
+	// auto format_as(const Event& e) { return e.ToString(); }
 }

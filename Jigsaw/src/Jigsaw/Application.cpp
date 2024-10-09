@@ -16,7 +16,7 @@ namespace Jigsaw {
 
 	void Application::Run() {
 		WindowResizeEvent e(1200, 720);
-		JS_TRACE(e);
+		JS_TRACE(e.ToString());
 
 		while (true);
 	}
