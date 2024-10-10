@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Jigsaw/Core.h"
+#include <fmt/core.h>
 
 namespace Jigsaw {
 
@@ -63,6 +64,17 @@ namespace Jigsaw {
 		Event& m_Event;
 	};
 
-	// 修改 - 重载格式化
-	// auto format_as(const Event& e) { return e.ToString(); }
+    // 定义一个概念约束, concept 定义 EventDerived 必须继承于 Event
+    template <typename T>
+    concept EventDerived = std::is_base_of_v<Event, T>;
 }
+
+// 实现一个 Event 的 formatter 特化，实现自定义类型输出
+template <Jigsaw::EventDerived Event>
+struct fmt::formatter<Event> : fmt::formatter<std::string> {
+    // 格式化
+    template <typename FormatContext>
+    auto format(const Event& e, FormatContext& ctx) const {
+        return fmt::format_to(ctx.out(), "{}", e.ToString());
+    }
+};

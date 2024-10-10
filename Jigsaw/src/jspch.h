@@ -12,6 +12,7 @@
 #include <unordered_map>
 #include <unordered_set>
 
+#include "Jigsaw/Log.h"
 
 #ifdef JS_PLATFORM_WINDOWS
 	#include <Windows.h>

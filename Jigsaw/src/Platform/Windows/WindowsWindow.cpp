@@ -2,8 +2,6 @@
 
 #include "WindowsWindow.h"
 
-
-
 namespace Jigsaw {
 
 	static bool s_GLFWInitialized = false;

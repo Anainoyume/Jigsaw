@@ -1,4 +1,0 @@
-E:/GameDev/Jigsaw/build/CMakeFiles/Jigsaw.dir
-E:/GameDev/Jigsaw/build/CMakeFiles/Sandbox.dir
-E:/GameDev/Jigsaw/build/CMakeFiles/edit_cache.dir
-E:/GameDev/Jigsaw/build/CMakeFiles/rebuild_cache.dir
