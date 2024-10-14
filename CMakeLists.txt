@@ -1,21 +1,31 @@
-cmake_minimum_required(VERSION 3.20)  # È·±£Ê¹ÓÃÊÊµ±µÄ CMake °æ±¾
+cmake_minimum_required(VERSION 3.20)  # ç¡®ä¿ä½¿ç”¨é€‚å½“çš„ CMake ç‰ˆæœ¬
 
 project(Jigsaw VERSION 1.0 LANGUAGES CXX)
 
+#=========è·å– vcpkg çš„è·¯å¾„======================================================================================#
+if(DEFINED ENV{VCPKG_ROOT})
+    set(VCPKG_PATH $ENV{VCPKG_ROOT})
+    # è½¬æ¢ åæ–œæ  åˆ° æ­£æ–œæ 
+    string(REPLACE "\\" "/" VCPKG_PATH "${VCPKG_PATH}")
+    message(STATUS "å½“å‰ä½¿ç”¨ vcpkg è·¯å¾„: ${VCPKG_PATH}")
+else()
+    message(FATAL_ERROR "è¯·è®¾ç½® VCPKG_ROOT ç¯å¢ƒå˜é‡.")
+endif()
+
 #=========Settings=============================================================================================#
-    # ÉèÖÃ C++ ±ê×¼
+    # è®¾ç½® C++ æ ‡å‡†
     set(CMAKE_CXX_STANDARD 20)
     set(CMAKE_CXX_STANDARD_REQUIRED ON)
-    # ÉùÃ÷Îª·Ç win32 ÏîÄ¿
+    # å£°æ˜ä¸ºé win32 é¡¹ç›®
     set(CMAKE_WIN32_EXECUTABLE OFF)
-    # Ö¸¶¨ vcpkg µÄÇ°×º
-    set(CMAKE_PREFIX_PATH "E:/vcpkg/vcpkg/installed/x64-mingw-static")
-    set(CMAKE_TOOLCHAIN_FILE "E:/vcpkg/vcpkg/scripts/buildsystems/vcpkg.cmake")
+    # æŒ‡å®š vcpkg çš„å‰ç¼€
+    set(CMAKE_PREFIX_PATH "${VCPKG_PATH}/installed/x64-mingw-static")
+    set(CMAKE_TOOLCHAIN_FILE "${VCPKG_PATH}/scripts/buildsystems/vcpkg.cmake")
 
     # vcpkg include
-    set(VCPKG_INCLUDE_DIR "E:/vcpkg/vcpkg/installed/x64-mingw-static/include")
+    set(VCPKG_INCLUDE_DIR "${VCPKG_PATH}/installed/x64-mingw-static/include")
 
-    # ²éÕÒ OpenGL, GLFW ºÍ spdlog
+    # æŸ¥æ‰¾ OpenGL, GLFW å’Œ spdlog
     find_package(OpenGL REQUIRED)
     find_package(spdlog REQUIRED)
     find_package(fmt REQUIRED)
@@ -25,21 +35,21 @@ project(Jigsaw VERSION 1.0 LANGUAGES CXX)
 
 
 #=========Jigsaw Target========================================================================================#
-    # ´´½¨ Jigsaw ÏîÄ¿
+    # åˆ›å»º Jigsaw é¡¹ç›®
     file(GLOB_RECURSE JIGSAW_SOURCES "Jigsaw/src/*.cpp" "Jigsaw/src/*.h")
     add_library(Jigsaw SHARED
         Jigsaw/src/jspch.cpp
         ${JIGSAW_SOURCES}
     )
 
-    # °üº¬Ä¿Â¼
+    # åŒ…å«ç›®å½•
     target_include_directories(Jigsaw PRIVATE
             "${PROJECT_SOURCE_DIR}/Jigsaw/src"
 
             "${VCPKG_INCLUDE_DIR}"
     )
 
-    # Ìí¼ÓÁ´½Ó¿â
+    # æ·»åŠ é“¾æ¥åº“
     target_link_libraries(Jigsaw PUBLIC
         glfw
         OpenGL::GL
@@ -50,7 +60,7 @@ project(Jigsaw VERSION 1.0 LANGUAGES CXX)
         $<$<BOOL:${MINGW}>:ws2_32>
     )
 
-    # ¶¨ÒåÔ¤´¦ÀíÆ÷ºê
+    # å®šä¹‰é¢„å¤„ç†å™¨å®
     target_compile_definitions(Jigsaw PRIVATE
         JS_PLATFORM_WINDOWS
         JS_BUILD_DLL
@@ -61,7 +71,7 @@ project(Jigsaw VERSION 1.0 LANGUAGES CXX)
 
 
 #=========Sandbox Target=======================================================================================#
-    # ´´½¨ Sandbox ÏîÄ¿
+    # åˆ›å»º Sandbox é¡¹ç›®
     file(GLOB_RECURSE SANDBOX_SOURCES "Sandbox/src/*.cpp" "Sandbox/src/*.h")
     add_executable(Sandbox
         ${SANDBOX_SOURCES}
@@ -72,12 +82,12 @@ project(Jigsaw VERSION 1.0 LANGUAGES CXX)
         "${PROJECT_SOURCE_DIR}/Jigsaw/src"
     )
 
-    # Ìí¼ÓÁ´½Ó¿â
+    # æ·»åŠ é“¾æ¥åº“
     target_link_libraries(Sandbox PRIVATE
         Jigsaw
     )
 
-    # ¶¨ÒåÔ¤´¦ÀíÆ÷ºê
+    # å®šä¹‰é¢„å¤„ç†å™¨å®
     target_compile_definitions(Sandbox PRIVATE
         JS_PLATFORM_WINDOWS
     )
@@ -85,11 +95,13 @@ project(Jigsaw VERSION 1.0 LANGUAGES CXX)
 
 
 #========Configuration Settings================================================================================#
-    # ÅäÖÃ²»Í¬µÄ¹¹½¨ÀàĞÍ
+    # é…ç½®ä¸åŒçš„æ„å»ºç±»å‹
     foreach(CONFIGURATION Debug Release Dist)
         string(TOUPPER ${CONFIGURATION} CONFIG)
         if (CMAKE_BUILD_TYPE STREQUAL ${CONFIG})
             target_compile_definitions(Jigsaw PRIVATE JS_DEBUG)
+            target_compile_definitions(Jigsaw PRIVATE JS_ENABLE_ASSERTS)
+
             target_compile_definitions(Sandbox PRIVATE JS_DEBUG)
         endif()
 
@@ -108,9 +120,9 @@ project(Jigsaw VERSION 1.0 LANGUAGES CXX)
         endif()
     endforeach()
 
-    # ÉèÖÃ¿âºÍ¿ÉÖ´ĞĞÎÄ¼şµÄÊä³öÄ¿Â¼
+    # è®¾ç½®åº“å’Œå¯æ‰§è¡Œæ–‡ä»¶çš„è¾“å‡ºç›®å½•
     set(OUTPUT_DIR "${CMAKE_BINARY_DIR}/bin")
-    # ÉèÖÃÅäÖÃÊä³öÄ¿Â¼
+    # è®¾ç½®é…ç½®è¾“å‡ºç›®å½•
     foreach(CONFIGURATION Debug Release Dist)
         string(TOUPPER ${CONFIGURATION} CONFIG)
         set(TRIPLET_DIR "${CONFIGURATION}-${CMAKE_SYSTEM_NAME}-${CMAKE_SYSTEM_PROCESSOR}")
@@ -128,7 +140,7 @@ project(Jigsaw VERSION 1.0 LANGUAGES CXX)
         )
     endforeach()
 
-    # ÉèÖÃÊä³ö¿½±´ÃüÁî
+    # è®¾ç½®è¾“å‡ºæ‹·è´å‘½ä»¤
     string(TOUPPER ${CMAKE_BUILD_TYPE} CONFIG)
     add_custom_command(TARGET Jigsaw Sandbox POST_BUILD
             COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:Jigsaw> $<TARGET_FILE_DIR:Sandbox>
