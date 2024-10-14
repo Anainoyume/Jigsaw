@@ -20,6 +20,7 @@ namespace Jigsaw {
 	}
 
     void Application::OnEvent(Event &e) {
+        // 实现专属于 WindowCloseEvent 的一个事件调度
         EventDispatcher dispatcher(e);
         dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(Application::OnWindowClose));
 
