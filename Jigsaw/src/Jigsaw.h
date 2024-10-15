@@ -3,6 +3,7 @@
 // For use by Jigsaw Application
 
 #include "Jigsaw/Application.h"
+#include "Jigsaw/Layer.h"
 #include "Jigsaw/Log.h"
 
 // ---Entry Point--------------------------------
