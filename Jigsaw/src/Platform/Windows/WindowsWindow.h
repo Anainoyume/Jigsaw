@@ -3,7 +3,7 @@
 #include "Jigsaw/Window.h"
 #include "Jigsaw/Log.h"
 
-#include <GL/glew.h>
+#include <glad/glad.h> // 会包含 gl.h 所以必须在 glfw3.h 之前
 #include <GLFW/glfw3.h>
 
 namespace Jigsaw {

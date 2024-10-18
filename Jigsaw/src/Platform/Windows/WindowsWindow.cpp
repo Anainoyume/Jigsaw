@@ -60,6 +60,9 @@ namespace Jigsaw {
 
 		m_Window = glfwCreateWindow((int)props.Width, (int)props.Height, m_Data.Title.c_str(), nullptr, nullptr);
 		glfwMakeContextCurrent(m_Window);
+        int status = gladLoadGLLoader((GLADloadproc) glfwGetProcAddress);
+        JS_CORE_ASSERT(status, "Failed to initialize Glad!");
+
         // glfw 运行为窗口回调绑定一个 自定义数据。这样使得回调的时候运行我们可以访问该窗口对应的数据
 		glfwSetWindowUserPointer(m_Window, &m_Data);
 		SetVSync(true);

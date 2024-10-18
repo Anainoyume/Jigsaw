@@ -31,6 +31,8 @@ endif()
     find_package(fmt REQUIRED)
     find_package(glfw3 REQUIRED)
     find_package(GLEW REQUIRED)
+    find_package(glad REQUIRED)
+    find_package(imgui REQUIRED)
 #=========Settings=============================================================================================#
 
 
@@ -54,9 +56,11 @@ endif()
         glfw
         OpenGL::GL
         GLEW::GLEW
-        opengl32.lib
+        glad::glad
+        opengl32
         spdlog::spdlog
         fmt::fmt
+        imgui::imgui
         $<$<BOOL:${MINGW}>:ws2_32>
     )
 
